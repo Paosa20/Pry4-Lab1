@@ -4,9 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
+  Keyboard,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import Task from "./components/Task";
 
@@ -15,9 +16,18 @@ export default function App() {
   const [taskItems, setTaskItems] = useState([]);
 
   const handleTask = () => {
+    Keyboard.dismiss();
     setTaskItems([...taskItems, task]);
 
     setTask(null);
+  };
+
+  const completeTask = (index) => {
+    let copyItems = [...taskItems];
+
+    copyItems.splice(index, 1);
+
+    setTaskItems(copyItems);
   };
   return (
     <View style={styles.container}>
@@ -28,8 +38,15 @@ export default function App() {
         <View style={styles.items}>
           {/* {tasks will go here} */}
 
-          {taskItems.map(function (item) {
-            return <Task  text={item} />;
+          {taskItems.map((item, index) => {
+
+            return (
+               <TouchableOpacity  key={index} onPress={() => completeTask()}>
+                <Task key={index} text={item}/>
+              </TouchableOpacity>
+
+              
+            )
           })}
           {/* <Task text={"First task"} />
           <Task text={"Second task"} /> */}

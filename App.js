@@ -11,12 +11,14 @@ import {
 import Task from "./components/Task";
 
 export default function App() {
-
   const [task, setTask] = useState();
+  const [taskItems, setTaskItems] = useState([]);
 
   const handleTask = () => {
-  console.log(task);
-  }
+    setTaskItems([...taskItems, task]);
+
+    setTask(null);
+  };
   return (
     <View style={styles.container}>
       {/* {today tasks} */}
@@ -25,8 +27,12 @@ export default function App() {
 
         <View style={styles.items}>
           {/* {tasks will go here} */}
-          <Task text={"First task"} />
-          <Task text={"Second task"} />
+
+          {taskItems.map(function (item) {
+            return <Task  text={item} />;
+          })}
+          {/* <Task text={"First task"} />
+          <Task text={"Second task"} /> */}
         </View>
       </View>
 
@@ -36,9 +42,14 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder={"Write new task"} value={task} onChangeText={text => setTask(text)} />
+        <TextInput
+          style={styles.input}
+          placeholder={"Write new task"}
+          value={task}
+          onChangeText={(text) => setTask(text)}
+        />
 
-        <TouchableOpacity >
+        <TouchableOpacity onPress={() => handleTask()}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
